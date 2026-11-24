@@ -1,0 +1,16 @@
+node_modules/
+docs/workspace/
+docs/runtime-config.js
+public/runtime-config.js
+.env*
+!.env.example
+.vercel/
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+*firebase-adminsdk*.json
+cramly-unlock-codes*.csv
+cramly-backup*.json
+.DS_Store

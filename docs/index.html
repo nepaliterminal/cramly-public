@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="./runtime-config.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Turn class notes into flashcards and quizzes. Study for free with Cramly.">
+  <meta name="theme-color" content="#f3eee3">
+  <title>Cramly | Flashcards and quizzes from your notes</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module">
+    import { mountAuth } from './auth.js';
+    mountAuth(document);
+  </script>
+</head>
+<body>
+  <a id="study-skip-link" class="skip-link button primary" href="#main" hidden>Skip to study workspace</a>
+  <header class="site-header">
+    <div class="nav">
+      <a class="brand" href="./">Cramly</a>
+      <div id="study-header" class="study-header" hidden>
+        <nav class="nav-actions" aria-label="Study tools">
+          <button id="library-button" class="button quiet" type="button">Library</button>
+          <button id="settings-button" class="button quiet" type="button">Settings</button>
+          <button id="upgrade-button" class="button quiet" type="button">Upgrade</button>
+        </nav>
+        <div class="account">
+          <img id="account-avatar" class="account-avatar" width="32" height="32" alt="" referrerpolicy="no-referrer" hidden>
+          <span id="account-initials" class="account-avatar" aria-hidden="true" hidden></span>
+          <span id="account-name" class="account-name"></span>
+          <button id="sign-out" class="button quiet small" type="button">Sign out</button>
+          <p id="account-status" class="status" role="status"></p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main id="sign-in-screen">
+    <section class="sign-in-panel" aria-labelledby="sign-in-heading">
+      <h1 id="sign-in-heading">Your study<br> <em>workspace.</em></h1>
+      <p>Sign in to turn your own notes into flashcards and quizzes.</p>
+      <button id="sign-in" class="button quiet google-sign-in" type="button" disabled>
+        <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true" focusable="false">
+          <path fill="#4285f4" d="M43.61 24.46c0-1.36-.12-2.66-.35-3.92H24v7.43h11a9.4 9.4 0 0 1-4.08 6.17v5.15h6.62c3.88-3.57 6.07-8.83 6.07-14.83z"/>
+          <path fill="#34a853" d="M24 44c5.51 0 10.13-1.83 13.51-4.71l-6.62-5.15c-1.83 1.23-4.17 1.96-6.89 1.96-5.33 0-9.85-3.6-11.47-8.44H5.7v5.33A20 20 0 0 0 24 44z"/>
+          <path fill="#fbbc05" d="M12.53 27.66a12 12 0 0 1 0-7.32v-5.33H5.7a20 20 0 0 0 0 17.98l6.83-5.33z"/>
+          <path fill="#ea4335" d="M24 11.9c3 0 5.69 1.03 7.81 3.05l5.86-5.86C34.12 5.78 29.5 4 24 4A20 20 0 0 0 5.7 15.01l6.83 5.33C14.15 15.5 18.67 11.9 24 11.9z"/>
+        </svg>
+        Sign in with Google
+      </button>
+      <p id="sign-in-status" class="status" role="status">Checking your sign-in…</p>
+      <noscript><p>Enable JavaScript to sign in.</p></noscript>
+    </section>
+  </main>
+  <main id="main" tabindex="-1" hidden>
+    <section class="hero">
+      <h1>Study from<br class="title-break"> <em>your own notes.</em></h1>
+      <p>Paste your class notes or upload a file. Cramly makes flashcards and a multiple-choice quiz from what you give it.</p>
+    </section>
+    <div class="workspace">
+      <section class="panel editor" aria-labelledby="notes-heading">
+        <div class="panel-heading">
+          <h2 id="notes-heading"><label for="notes">Class notes</label></h2>
+          <span class="folio" aria-hidden="true">01</span>
+        </div>
+        <form id="notes-form">
+          <textarea id="notes" rows="8" placeholder="Paste a few sentences or a whole lesson."></textarea>
+          <div class="editor-tools">
+            <label class="button quiet small upload">Upload .txt or .md<input id="upload" type="file" accept=".txt,.md,text/plain,text/markdown"></label>
+            <button id="example" class="button quiet small" type="button">Use sample notes</button>
+            <span id="note-count" class="note-count">0 / 3,000</span>
+          </div>
+          <div class="editor-footer">
+            <button id="generate" class="button primary" type="submit">Make a study set</button>
+            <span id="usage"></span>
+          </div>
+          <p id="generator-notice" class="status"></p>
+          <p id="note-status" class="status" role="status"></p>
+        </form>
+      </section>
+      <section class="panel practice" aria-labelledby="practice-heading">
+        <div class="panel-heading">
+          <h2 id="practice-heading">Practice</h2>
+          <span class="folio" aria-hidden="true">02</span>
+        </div>
+        <div id="empty" class="empty">
+          <h3>No study set yet</h3>
+          <p>Add notes to make flashcards and a quiz.</p>
+        </div>
+        <div id="study" hidden>
+          <div class="switcher" role="group" aria-label="Study mode">
+            <button id="cards-tab" class="button quiet" type="button" aria-pressed="true">Flashcards</button>
+            <button id="quiz-tab" class="button quiet" type="button" aria-pressed="false">Quiz</button>
+          </div>
+          <div id="study-content"></div>
+          <div class="study-actions">
+            <button id="save" class="button quiet small" type="button">Save deck</button>
+            <button id="export" class="button quiet small" type="button">Export CSV</button>
+            <button id="print" class="button quiet small" type="button">Print</button>
+          </div>
+          <p id="study-status" class="status" role="status"></p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="settings-dialog" aria-labelledby="settings-heading">
+    <form id="settings-form">
+      <div class="dialog-heading"><h2 id="settings-heading">Generation settings</h2><button type="button" class="button quiet close" data-close aria-label="Close">×</button></div>
+      <label for="provider">Generator</label>
+      <select id="provider">
+        <option value="pollinations">Pollinations · no key needed</option>
+        <option value="offline">Local · no key needed</option>
+        <option value="gemini">Google Gemini · use your own key</option>
+      </select>
+      <div id="gemini-field" hidden>
+        <label for="gemini-key">Gemini API key</label>
+        <input id="gemini-key" type="password" autocomplete="off" spellcheck="false">
+        <p><a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">Get a Gemini API key</a>. Your key is saved on this browser. Clear the field and save to remove it.</p>
+      </div>
+      <p>Choose Local to keep notes on this device. Pollinations and Gemini receive the notes you submit, so leave out private information. If either provider fails, Cramly makes the set locally.</p>
+      <button class="button primary" type="submit">Save settings</button>
+    </form>
+  </dialog>
+
+  <dialog id="upgrade-dialog" aria-labelledby="upgrade-heading">
+    <div class="dialog-heading"><h2 id="upgrade-heading">Cramly Pro</h2><button type="button" class="button quiet close" data-close aria-label="Close">×</button></div>
+    <p class="price">$5.99 <span>/ month</span></p>
+    <p>Make as many sets as you need. Each set can use up to 20,000 characters and include up to 30 flashcards and 30 questions. Save decks, export flashcards as CSV, or print them.</p>
+    <p id="upgrade-status"></p>
+    <div class="payment">
+      <strong>Payment options</strong>
+      <p id="checkout-notice">Checkout isn’t open yet. Please don’t send payment until paid access is available.</p>
+      <div id="payment-methods" hidden>
+        <p>Payment details will appear here when checkout opens.</p>
+        <p id="paypal-details"></p>
+        <div class="payment-actions">
+          <a id="cash-app-link" class="button quiet" target="_blank" rel="noreferrer">Pay with Cash App</a>
+          <a id="paypal-link" class="button quiet" href="https://www.paypal.com/" target="_blank" rel="noreferrer">Open PayPal</a>
+          <button id="copy-paypal" class="button quiet" type="button">Copy PayPal email</button>
+          <a id="stripe-link" class="button quiet" target="_blank" rel="noreferrer" hidden>Pay with Stripe</a>
+        </div>
+        <p id="payment-status" class="status" role="status"></p>
+      </div>
+    </div>
+    <form id="unlock-form">
+      <label for="unlock-code">Already have an unlock code?</label>
+      <div class="unlock-row">
+        <input id="unlock-code" type="text" placeholder="CRAMLY-…" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+        <button class="button primary" type="submit">Unlock Pro</button>
+      </div>
+      <p id="unlock-status" class="status" role="status"></p>
+    </form>
+  </dialog>
+
+  <dialog id="library-dialog" aria-labelledby="library-heading">
+    <div class="dialog-heading"><h2 id="library-heading">Saved decks</h2><button type="button" class="button quiet close" data-close aria-label="Close">×</button></div>
+    <div id="library-list"></div>
+  </dialog>
+  <div id="print-content" hidden></div>
+</body>
+</html>

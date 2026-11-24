@@ -1,0 +1,30 @@
+{
+  "name": "cramly",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/public-config.mjs development && vite --host 0.0.0.0",
+    "build": "node scripts/public-config.mjs production && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "serve": "node server/serve.mjs",
+    "check": "tsc --noEmit",
+    "format": "prettier --write src server api proxy.js vercel.json index.html vite.config.js tsconfig.json public/manifest.webmanifest test/learning.test.js test/security.test.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@vercel/functions": "^2.2.13",
+    "jose": "^6.0.11",
+    "lucide-react": "^0.468.0",
+    "pdfjs-dist": "^4.10.38",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "prettier": "^3.6.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.4.1"
+  }
+}
